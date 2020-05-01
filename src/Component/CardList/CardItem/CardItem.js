@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card } from 'antd';
 import { HeartTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 
@@ -17,7 +17,7 @@ export default function CardItem(props) {
 
     const getActionButton = (id) => {
         const itemObject = currentState.addedItems.findIndex(item => item.id === id);
-        return itemObject == -1 ? (
+        return itemObject === -1 ? (
             <div style={{ fontWeight: 700 }} onClick={() =>
                 dispatch(ACTIONS.addToCart(props.data.id))
             }>Add to cart</div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'antd';
 import { List, Avatar, Row, Col, Card } from 'antd';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from "react-redux";
 
 import 'antd/dist/antd.css';
