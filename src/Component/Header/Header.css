@@ -1,0 +1,25 @@
+.nav-right {
+    float: right;
+}
+
+.logo-text {
+    font-size: 28px;
+    font-family: 'Meddon', cursive;
+}
+
+.logo-text:hover, .logo-text:visited {
+    color: #ffffff;
+}
+
+.cart-button-block, .cart-button-block:hover, .cart-button-block:focus {
+    background: #27b928;
+    box-shadow: none;
+    color: #ffff;
+    top: 5px;
+    border: 2px solid #fff;
+}
+
+#cart-count {
+    position: relative;
+    top: -2px;
+}
