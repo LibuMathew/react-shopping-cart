@@ -11,6 +11,7 @@ import Header from './Component/Header/Header';
 import CardList from './Component/CardList/CardList';
 import * as ACTIONS from './Store/Actions/CartActions';
 
+import Counter from './Component/Helper/Counter/Counter';
 
 function App() {
 
@@ -41,10 +42,14 @@ function App() {
     setVisible(false);
   };
 
-  const updateAddOnQuantity = (id, type) => {
-    const invokeAction = type === 'Y' ? 'addQuantity' : 'subtractQuantity';
-    dispatch(ACTIONS[invokeAction](id))
+  const onIncrementHandler = (ev) => {
+    dispatch(ACTIONS.addQuantity(ev.id));
   };
+  
+  const onDecrementHandler = (ev) => {
+    dispatch(ACTIONS.subtractQuantity(ev.id));
+  };
+
 
   return (
     <div className="App">
@@ -82,17 +87,7 @@ function App() {
                 renderItem={item => (
                   <List.Item
                     actions={[
-                      <a key="add-item" className="cart-addons">
-                        <div className="addon-values">
-                          <a className="decrease-addon" onClick={() => updateAddOnQuantity(item.id, 'N')}>
-                            <MinusOutlined style={{ position: 'relative', top: 2 }} />
-                          </a>
-                          <a className="addon-quantity">{item.quantity}</a>
-                          <a className="increase-addon" onClick={() => updateAddOnQuantity(item.id, 'Y')}>
-                            <PlusOutlined style={{ position: 'relative', top: 2 }} />
-                          </a>
-                        </div>
-                      </a>,
+                      <Counter value={item.quantity} params={item} onIncrement={onIncrementHandler} onDecrement={onDecrementHandler} />,
                       <a key="list-remove" onClick={() => dispatch(ACTIONS.removeItem(item.id))}>remove</a>
                     ]}
                   >
