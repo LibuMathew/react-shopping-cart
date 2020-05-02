@@ -179,7 +179,7 @@ const initalState = {
     totalDiscount: 0
 }
 
-const rootReducer = (state = initalState, action) => {
+const cartReducer = (state = initalState, action) => {
     switch (action.type) {
         case ACTION_TYPES.ADD_TO_CART: {
             let addedItem = state.items.find(item => item.id === action.id);
@@ -280,4 +280,4 @@ const rootReducer = (state = initalState, action) => {
     }
 }
 
-export default rootReducer;
+export default cartReducer;

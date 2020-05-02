@@ -4,28 +4,34 @@ import { HeartTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
 
 import './CardItem.css';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import * as ACTIONS from '../../../Store/Actions/CartActions';
+import * as CART_ACTIONS from '../../../Store/Actions/CartActions';
+import * as FAVOURITE_ACTIONS from '../../../Store/Actions/FavouriteAction';
+import HeartIcon from '../../Helper/CustomIcon/HeartIcon';
 
 const { Meta } = Card;
 
 export default function CardItem(props) {
 
-    const currentState = useSelector(state => state);
     const dispatch = useDispatch();
 
     const getActionButton = (id) => {
-        const itemObject = currentState.addedItems.findIndex(item => item.id === id);
-        return itemObject === -1 ? (
+        return !props.isAddedToCart ? (
             <div style={{ fontWeight: 700 }} onClick={() =>
-                dispatch(ACTIONS.addToCart(props.data.id))
+                dispatch(CART_ACTIONS.addToCart(props.data.id))
             }>Add to cart</div>
         ) : (
                 <div style={{ fontWeight: 700, color: '#F44336' }} onClick={() =>
-                    dispatch(ACTIONS.removeItem(props.data.id))
+                    dispatch(CART_ACTIONS.removeItem(props.data.id))
                 }>Remove</div>
             );
+    };
+
+    const getFavouriteIcon = (id) => {
+        return props.isFavourite ? (
+            <HeartIcon style={{ color: 'hotpink' }} onClick={() => dispatch(FAVOURITE_ACTIONS.removeFavourite(id))} />
+        ) : (<HeartTwoTone key="favourite" twoToneColor="#eb2f96" onClick={() => dispatch(FAVOURITE_ACTIONS.addToFavourite(id))} />);
     }
 
     return (
@@ -35,7 +41,7 @@ export default function CardItem(props) {
             cover={<img alt={props.data.title} src={props.data.imageUrl} />}
             actions={[
                 getActionButton(props.data.id),
-                <HeartTwoTone key="favourite" twoToneColor="#eb2f96" />
+                getFavouriteIcon(props.data.id)
             ]}
         >
             {props.data.isBestSeller ? (<span className="all-tags best-seller"></span>) : null}

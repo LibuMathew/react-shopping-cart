@@ -14,16 +14,18 @@ import Counter from './Component/Helper/Counter/Counter';
 
 function App() {
 
-  const currentState = useSelector(state => state);
+  const currentCartState = useSelector(state => state.CartReducer);
+  const currentFavouriteState = useSelector(state => state.FavouriteReducer);
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("My Cart (0)");
 
   useEffect(() => {
-    const tilte = `My Cart (${currentState.addedItems.length})`;
+    const tilte = `My Cart (${currentCartState.addedItems.length})`;
     setModalTitle(tilte);
-  }, [currentState]);
+  }, [currentCartState]);
 
   const showModal = () => {
     setVisible(true);
@@ -44,7 +46,7 @@ function App() {
   const onIncrementHandler = (ev) => {
     dispatch(ACTIONS.addQuantity(ev.id));
   };
-  
+
   const onDecrementHandler = (ev) => {
     dispatch(ACTIONS.subtractQuantity(ev.id));
   };
@@ -52,10 +54,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header onClick={showModal} />
+      <Header onClick={showModal} params={currentCartState} />
       <div className="container">
         <div className="card-list-container flex-container wrap">
-          <CardList data={currentState.items} />
+          <CardList data={currentCartState} params={currentFavouriteState} />
         </div>
 
         <Modal
@@ -81,7 +83,7 @@ function App() {
             <Col span={16}>
               <List
                 itemLayout="horizontal"
-                dataSource={currentState.addedItems}
+                dataSource={currentCartState.addedItems}
                 style={{ borderRight: '1px solid #f0f0f0', marginRight: 5, paddingRight: 5 }}
                 renderItem={item => (
                   <List.Item
@@ -93,6 +95,12 @@ function App() {
                     <List.Item.Meta
                       avatar={<Avatar src={item.imageUrl} />}
                       title={item.title}
+                      style={{
+                        textOverflow: 'ellipsis',
+                        width: 185,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden'
+                      }}
                     />
                   </List.Item>
                 )}
@@ -102,7 +110,7 @@ function App() {
               <Card size="small" title="Price Details" style={{ width: 265 }}>
                 <Row style={{ marginBottom: 5 }}>
                   <Col span={18}>Price (4 items)</Col>
-                  <Col span={6}>₹{currentState.total}</Col>
+                  <Col span={6}>₹{currentCartState.total}</Col>
                 </Row>
                 <Row style={{ marginBottom: 5 }}>
                   <Col span={18}>Delivery Fee</Col>
@@ -110,12 +118,12 @@ function App() {
                 </Row>
                 <Row style={{ borderTop: '1px dotted #ccc', borderBottom: '1px dotted #ccc', marginBottom: 5, padding: '10px 0px 10px 0px' }}>
                   <Col span={18} style={{ fontWeight: 700, fontSize: 16 }}>Total Amount</Col>
-                  <Col span={6}>₹{currentState.total + 50}</Col>
+                  <Col span={6}>₹{currentCartState.total + 50}</Col>
                 </Row>
                 {
-                  currentState.totalDiscount > 0 ? (
+                  currentCartState.totalDiscount > 0 ? (
                     <Row>
-                      <Col style={{ color: '#388e3c' }}>You will save ₹{currentState.totalDiscount} on this order</Col>
+                      <Col style={{ color: '#388e3c' }}>You will save ₹{currentCartState.totalDiscount} on this order</Col>
                     </Row>
                   ) : null
                 }
